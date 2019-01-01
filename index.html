@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat-box</title>
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.darker {
+  border-color: #aaa;
+  background-color: #bbb;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.header {
+  width: 100%;
+  height: 30px;
+  background-color: #3376ac;
+  color: #f1f1f1;
+  position: relative;
+}
+
+.header span {
+  position: absolute;
+  bottom: 2px;
+  padding-left: 10px;
+}
+
+.header b {
+  position: absolute;
+  bottom: 4px;
+  right: 30px;
+  cursor: pointer;
+}
+
+.container-message {
+  height: 350px;
+  width: 100%;
+  border: 2px solid #E1E1E1;
+  overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+  width: 300px;
+  height: 500px;
+  display: none;
+  position: fixed;
+  bottom: 25px;
+  right: 15px;
+  border: 1px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+
+/* Full-width textarea */
+.form-container input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #ddd;
+  resize: none;
+}
+
+/* When the textarea gets focus, do something */
+.form-container input:focus {
+  background-color: #bbb;
+  outline: none;
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.div-container {
+  height: 220px;
+  max-width: 300px;
+  background-color: white;
+}
+</style>
+</head>
+<body>
+
+<h2>HR Manager</h2>
+
+
+<button class="open-button" onclick="openForm()">Chat</button>
+
+<div class="chat-popup" id="myForm">
+  <div class="form-container" method="get">
+    <div class="header" id="title"><span>CTLI HR Helpdesk</span><b><span onclick="closeForm()">X</span></b></div>
+    <div id="chat_messages" class = "container-message"></div>
+    <div class="div-container">
+      <label for="msg"><b>Message</b></label>
+      <input type="text" name="q" id="q" placeholder="Type message.." />
+
+      <button type="button" class="btn" id="send" onclick="submitRequest()">Send</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+document.getElementById("q")
+  .addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13) {
+    document.getElementById("send").click();
+  }
+});
+
+function createResponse(inputText, response) {
+  var element = document.getElementById("chat_messages");
+
+  var inputDiv = document.createElement("div");
+  var inputElement = document.createElement("p");
+  var inputNode = document.createTextNode(inputText);
+  inputElement.appendChild(inputNode);
+  inputDiv.appendChild(inputElement);
+  inputDiv.className = "container darker";
+  inputDiv.style.marginLeft = "20px";
+
+  var outputDiv = document.createElement("div");
+  var outputElement = document.createElement("p");
+  response = response.replace(/&quot;/g, '\"');
+  var outputNode = document.createTextNode(response);
+  outputElement.appendChild(outputNode);
+  outputDiv.appendChild(outputElement);
+  outputDiv.className = "container";
+  outputDiv.style.marginRight = "20px";
+  
+  element.appendChild(inputDiv);
+  element.appendChild(outputDiv);
+
+  //this jumps to the last element on the bottom
+  items = document.querySelectorAll(".container");
+  console.log(items);
+  last = items[items.length-1];
+  last.scrollIntoView();
+
+  document.getElementById("q").value = "";
+}
+function submitRequest() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	//alert(this.responseText);
+      var responseObj = JSON.parse(this.responseText);
+	//alert(responseObj);
+	//alert(responseObj[0].text);
+      createResponse(document.getElementById("q").value, responseObj[0].text || "");
+    }
+  };
+  xhttp.open("POST", "http://localhost:5005/webhooks/rest/webhook", true);
+  xhttp.setRequestHeader("content-type", "application/json");
+  xhttp.send('{"message": "'+document.getElementById("q").value+'"}');
+}
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</body>
+</html>
