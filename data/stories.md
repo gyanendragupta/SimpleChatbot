@@ -1,0 +1,29 @@
+## happy_path
+* greet
+  - utter_greet
+* mood_happy
+  - utter_happy
+* goodbye
+  - utter_goodbye
+
+## sad_path
+* greet
+  - utter_greet
+* mood_unhappy
+  - action_joke 
+* goodbye
+  - utter_goodbye
+
+## emp_query
+* greet
+  - utter_greet
+* emp_details
+  - action_empName
+* emp_totalLeaves
+  - action_totalLeaves
+* emp_appliedLeaves
+  - action_appliedLeaves
+* emp_balanceLeaves
+  - action_balanceLeaves 
+* goodbye
+  - utter_goodbye

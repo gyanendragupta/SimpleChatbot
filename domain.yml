@@ -1,0 +1,31 @@
+intents:
+  - greet
+  - mood_happy
+  - mood_unhappy
+  - emp_details
+  - emp_totalLeaves
+  - emp_appliedLeaves
+  - emp_balanceLeaves
+  - goodbye
+
+actions:
+  - utter_greet
+  - utter_happy
+  - utter_cheer_up
+  - utter_goodbye
+  - action_joke
+  - action_empName
+  - action_totalLeaves
+  - action_appliedLeaves
+  - action_balanceLeaves
+
+templates:
+  utter_greet:
+    - text: "Hi, how is it going?"
+  utter_happy:
+    - text: "Great, carry on!"
+  utter_cheer_up:
+    - text: "Don't be sad. Keep smiling!"
+  utter_goodbye:
+    - text: "Goodbye!"
+
