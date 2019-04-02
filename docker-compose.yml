@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   rasa_core:
-    image: rasa/rasa_core:latest
+    image: rasa/rasa_core:0.13.0a4
     ports:
       - 5005:5005
     volumes:
@@ -19,7 +19,7 @@ services:
       - -u
       - current/
   rasa_nlu:
-    image: rasa/rasa_nlu:latest-spacy
+    image: rasa/rasa_nlu:0.13.7-spacy
     volumes:
       - ./models/rasa_nlu:/app/models
     command:
@@ -28,7 +28,7 @@ services:
       - models
 
   action_server:
-    image: rasa/rasa_core_sdk:latest
+    image: rasa/rasa_core_sdk:0.13.0a1
     volumes:
       - ./actions:/app/actions
 
