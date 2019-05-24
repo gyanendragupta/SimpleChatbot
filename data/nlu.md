@@ -5,6 +5,7 @@
 - good morning
 - good evening
 - hey there
+- what's up
 
 ## intent:mood_happy
 - perfect
@@ -15,6 +16,7 @@
 - I am feeling very good
 - I am great
 - I'm good
+- i am very happy today
 
 ## intent:mood_unhappy
 - sad
@@ -59,6 +61,10 @@
 
 ## intent:goodbye
 - bye
+- bye bye
+- b bye
+- get lost
+- Go away
 - goodbye
 - see you around
 - see you later
